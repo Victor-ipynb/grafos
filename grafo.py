@@ -69,7 +69,6 @@ class Grafo:
                     self.caminhos.append([carga + self.lista[atual][i][1], self.lista[atual][i][0], percurso + '-' + self.nomes[self.lista[atual][i][0]]])
         self.caminhos.sort(key=lambda x: x[0])
         if self.caminhos:
-            print(self.caminhos)
             self.brotas[inicio][self.caminhos[0][1]] = True
             self.mapa[inicio][self.caminhos[0][1]] = self.caminhos[0][2]
             t = self.caminhos[0]
@@ -87,8 +86,12 @@ class Barvore(Grafo):
     
     def __init__(self, vertices):
         super().__init__(vertices)
+        self.arvore = []
     
     def BB_comparar(self, elemento, c = 0):
+        while len(self.arvore) <= c:
+            self.arvore.append(None)
+            
         if self.arvore[c]:
             if elemento > self.arvore[c]:
                 self.BB_comparar(elemento, 2*c+2)
@@ -108,7 +111,6 @@ class Barvore(Grafo):
                 self.BB_buscar(elemento, 2*c+1)
     
     def transformar_em_BB(self):
-        self.arvore = [None]*(2**len(self.vertices) - 1)
         for i in range(self.v):
             self.BB_comparar(self.valores[i])
     
@@ -161,7 +163,6 @@ class Barvore(Grafo):
         self.heap_descer()
     
     def transformar_em_heap(self):
-        self.arvore = []
         for i in range(self.v):
             self.heap_adicionar(self.valores[i])
         
